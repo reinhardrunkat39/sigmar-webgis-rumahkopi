@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="id" data-theme="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="theme-color" content="#0f0f0f" />
+    <meta
+      name="description"
+      content="WebGIS interaktif pemetaan persebaran rumah kopi di Kecamatan Kawangkoan Utara, Kabupaten Minahasa, Sulawesi Utara."
+    />
+    <title>SIG Persebaran Rumah Kopi · Kawangkoan Utara</title>
+
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+      crossorigin=""
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <!-- ============ SPLASH / LANDING ============ -->
+    <section id="splash" class="splash">
+      <div class="splash-bg">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+        <div class="grid-overlay"></div>
+      </div>
+
+      <div class="splash-content">
+        <div class="splash-eyebrow">
+          <span class="dot"></span> WebGIS · Minahasa · Sulawesi Utara
+        </div>
+
+        <h1 class="splash-title">
+          SIG Persebaran<br />
+          <span class="grad">Rumah Kopi ☕</span>
+        </h1>
+
+        <p class="splash-desc">
+          Sistem Informasi Geografis berbasis web untuk memetakan persebaran
+          rumah kopi di <b>Kecamatan Kawangkoan Utara</b>, Kabupaten Minahasa,
+          Sulawesi Utara — interaktif, modern, dan informatif.
+        </p>
+
+        <div class="splash-stats">
+          <div class="stat">
+            <div class="stat-num" id="splash-count">12</div>
+            <div class="stat-label">Rumah Kopi</div>
+          </div>
+          <div class="stat">
+            <div class="stat-num">1</div>
+            <div class="stat-label">Kecamatan</div>
+          </div>
+          <div class="stat">
+            <div class="stat-num">100%</div>
+            <div class="stat-label">Interaktif</div>
+          </div>
+        </div>
+
+        <button id="enter-map" class="btn-primary btn-xl">
+          🚀 Buka Peta Sekarang
+          <span class="arrow">→</span>
+        </button>
+
+        <div class="splash-credit">
+          Dibuat oleh <b>Reinhard G. M. Runkat</b> · NIM 241011060057 · Sistem Informasi
+        </div>
+      </div>
+
+      <button id="theme-toggle-splash" class="theme-toggle" title="Ganti tema">
+        <span class="theme-icon">🌙</span>
+      </button>
+    </section>
+
+    <!-- ============ MAP APP ============ -->
+    <section id="app" class="app hidden">
+      <div id="map"></div>
+
+      <!-- TOP BAR -->
+      <header id="topbar">
+        <button id="back-home" class="btn-ghost back" title="Kembali">
+          ←
+        </button>
+        <div class="topbar-title">
+          <span class="brand-dot"></span>
+          <span>SIG Rumah Kopi <em>· Kawangkoan Utara</em></span>
+        </div>
+        <div class="topbar-actions">
+          <button id="theme-toggle" class="btn-ghost icon" title="Ganti tema">
+            <span class="theme-icon">🌙</span>
+          </button>
+          <button id="toggle-panel" class="btn-ghost icon" title="Info">
+            ℹ︎
+          </button>
+        </div>
+      </header>
+
+      <!-- SEARCH (kiri) -->
+      <div id="search-wrap" class="ui-card">
+        <input
+          id="search"
+          type="text"
+          autocomplete="off"
+          placeholder="🔍  Cari rumah kopi…"
+        />
+        <div id="search-results"></div>
+      </div>
+
+      <!-- INFO PANEL -->
+      <aside id="panel" class="ui-card glow">
+        <div class="panel-header">
+          <div>
+            <div class="eyebrow">Tentang</div>
+            <h2>SIG Persebaran<br />Rumah Kopi ☕</h2>
+          </div>
+          <button id="close-panel" class="btn-ghost icon">✕</button>
+        </div>
+
+        <div id="panel-body">
+          <p class="desc">
+            Website ini menampilkan persebaran rumah kopi di
+            <b>Wilayah Kecamatan Kawangkoan</b> secara interaktif berbasis WebGIS
+            — guna membantu masyarakat menemukan lokasi & informasi rumah kopi.
+          </p>
+
+          <div class="info-box">
+            <div class="info-section">
+              <div class="info-label">Dosen Pengampu</div>
+              <div class="info-name">ERIC ALFONSIUS S.Kom., M.Kom.</div>
+              <div class="info-sub">NIP. 198002082007012002</div>
+            </div>
+            <div class="info-divider"></div>
+            <div class="info-section">
+              <div class="info-label">Pembuat</div>
+              <div class="info-name">Reinhard G. M. Runkat</div>
+              <div class="info-sub">NIM: 241011060057</div>
+              <div class="info-sub">Prodi: Sistem Informasi</div>
+            </div>
+          </div>
+
+          <button id="reset-view" class="btn-primary">⟳ Reset View</button>
+        </div>
+      </aside>
+
+      <!-- COUNTER BADGE -->
+      <div id="counter" class="ui-badge">
+        ☕ <span id="count">0</span> Rumah Kopi · Kawangkoan Utara
+      </div>
+    </section>
+
+    <script
+      src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+      integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+      crossorigin=""
+    ></script>
+    <script src="data/wilayah.js"></script>
+    <script src="data/rumahkopi.js"></script>
+    <script src="js/script.js"></script>
+  </body>
+</html>
